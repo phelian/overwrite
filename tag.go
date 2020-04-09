@@ -16,7 +16,6 @@ var (
 	tagValueOmitempty = "omitempty"
 	tagValueTrue      = "true"
 	tagValueFalse     = "false"
-
 	// ErrTagValueWrong values for wrong tag values
 	ErrTagValueWrong = errors.New("Wrong tag value")
 )

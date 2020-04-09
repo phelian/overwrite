@@ -22,7 +22,6 @@ func TestTypes(t *testing.T) {
 	err = Do(T{}, &T{})
 	require.NotNil(t, err)
 	require.True(t, errors.Is(err, ErrDstNotPtr), err.Error())
-
 	err = Do(&T{}, &T{})
 	require.NotNil(t, err)
 	require.True(t, errors.Is(err, ErrSrcNotStruct), err.Error())
@@ -33,6 +32,53 @@ func TestTypes(t *testing.T) {
 
 	err = Do(&T{}, T{})
 	require.Nil(t, err)
+}
+
+func TestNestedStructs(t *testing.T) {
+	type Tt struct {
+		TtN string `overwrite:"true"`
+	}
+
+	type T struct {
+		N  int    `overwrite:"true"`
+		B  string `overwrite:"true"`
+		Tt Tt
+	}
+
+	type K struct {
+		KN int    `overwrite:"true"`
+		KB string `overwrite:"true"`
+		T  T
+	}
+
+	tDst := &K{
+		KN: 1,
+		KB: "foo",
+		T: T{
+			N: 1337,
+			B: "foot",
+		},
+	}
+
+	tSrc := K{
+		KN: 11,
+		KB: "foos",
+		T: T{
+			N: 13375,
+			B: "foots",
+			Tt: Tt{
+				TtN: "footz",
+			},
+		},
+	}
+
+	err := Do(tDst, tSrc)
+	require.Nil(t, err)
+	require.Equal(t, tSrc.KN, tDst.KN)
+	require.Equal(t, tSrc.KB, tDst.KB)
+	require.Equal(t, tSrc.T.B, tDst.T.B)
+	require.Equal(t, tSrc.T.N, tDst.T.N)
+	require.Equal(t, tSrc.T.Tt.TtN, tDst.T.Tt.TtN)
 }
 
 func TestMap(t *testing.T) {

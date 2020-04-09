@@ -57,11 +57,13 @@ func Do(dst, src interface{}) error {
 		}
 
 		if field.Type.Kind() == reflect.Struct {
-			// TODO Handle
-		} else {
-			// Overwrite value
-			vDst.Elem().FieldByName(field.Name).Set(vSrc.Field(i))
+			// Pass the address of the interface type to recursion so all supported values get set
+			// in entire structure tree
+			return Do(vDst.Elem().Field(i).Addr().Interface(), vSrc.Field(i).Interface())
 		}
+
+		// Overwrite value
+		vDst.Elem().FieldByName(field.Name).Set(vSrc.Field(i))
 	}
 
 	return nil
