@@ -37,18 +37,20 @@ func TestTypes(t *testing.T) {
 
 func TestSimpleTypes(t *testing.T) {
 	type T struct {
-		N   int    `overwrite:"true"`
-		N1  int8   `overwrite:"true"`
-		N2  int16  `overwrite:"true"`
-		N3  int32  `overwrite:"true"`
-		N4  int64  `overwrite:"true"`
-		UN  uint   `overwrite:"true"`
-		UN1 uint8  `overwrite:"true"`
-		UN2 uint16 `overwrite:"true"`
-		UN3 uint32 `overwrite:"true"`
-		UN4 uint64 `overwrite:"true"`
-		B   string `overwrite:"true"`
-		G   string `overwrite:"false"`
+		N   int     `overwrite:"true"`
+		N1  int8    `overwrite:"true"`
+		N2  int16   `overwrite:"true"`
+		N3  int32   `overwrite:"true"`
+		N4  int64   `overwrite:"true"`
+		UN  uint    `overwrite:"true"`
+		UN1 uint8   `overwrite:"true"`
+		UN2 uint16  `overwrite:"true"`
+		UN3 uint32  `overwrite:"true"`
+		UN4 uint64  `overwrite:"true"`
+		F1  float32 `overwrite:"true"`
+		F2  float64 `overwrite:"true"`
+		B   string  `overwrite:"true"`
+		G   string  `overwrite:"false"`
 		J   string
 		H   string `overwrite:"true,omitempty"`
 		L   bool   `overwrite:"true"`
@@ -65,6 +67,8 @@ func TestSimpleTypes(t *testing.T) {
 		UN2: 111,
 		UN3: 1111,
 		UN4: 11111,
+		F1:  1.1,
+		F2:  2.1,
 		B:   "foo",
 		G:   "foop",
 		J:   "foob",
@@ -83,6 +87,8 @@ func TestSimpleTypes(t *testing.T) {
 		UN2: 3111,
 		UN3: 31111,
 		UN4: 311111,
+		F1:  2.2,
+		F2:  3.4,
 		B:   "bar",
 		G:   "",
 		J:   "",
@@ -102,10 +108,11 @@ func TestSimpleTypes(t *testing.T) {
 	require.Equal(t, tSrc.UN2, tDst.UN2)
 	require.Equal(t, tSrc.UN3, tDst.UN3)
 	require.Equal(t, tSrc.UN4, tDst.UN4)
+	require.Equal(t, tSrc.F1, tDst.F1)
+	require.Equal(t, tSrc.F2, tDst.F2)
 	require.Equal(t, tSrc.B, tDst.B)
 	require.NotEqual(t, tSrc.G, tDst.G)
 	require.NotEqual(t, tSrc.J, tDst.J)
 	require.NotEqual(t, tSrc.H, tDst.H)
 	require.Equal(t, tSrc.L, tDst.L)
-}
 }
