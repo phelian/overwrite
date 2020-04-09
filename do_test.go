@@ -35,6 +35,58 @@ func TestTypes(t *testing.T) {
 	require.Nil(t, err)
 }
 
+func TestMap(t *testing.T) {
+	type T struct {
+		MSS map[string]string `overwrite:"true"`
+		MIB map[int]bool      `overwrite:"true"`
+	}
+
+	tDst := &T{
+		MSS: map[string]string{"foo": "bar"},
+		MIB: map[int]bool{1: true, 2: false},
+	}
+
+	tSrc := T{
+		MSS: map[string]string{"fooz": "baz"},
+		MIB: map[int]bool{1: false, 2: true},
+	}
+
+	err := Do(tDst, tSrc)
+	require.Nil(t, err)
+	require.Equal(t, tSrc.MSS, tDst.MSS)
+	require.Equal(t, tSrc.MIB, tDst.MIB)
+}
+
+func TestSliceAndArrays(t *testing.T) {
+	type T struct {
+		NS []int     `overwrite:"true"`
+		BS []string  `overwrite:"true"`
+		BA [2]string `overwrite:"true"`
+	}
+
+	tDst := &T{
+		NS: make([]int, 0),
+		BS: make([]string, 0),
+		BA: [2]string{"foo", "bar"},
+	}
+	tDst.NS = append(tDst.NS, 2, 3)
+	tDst.BS = append(tDst.BS, "monkey", "ape")
+
+	tSrc := T{
+		NS: make([]int, 0),
+		BS: make([]string, 0),
+		BA: [2]string{"dim", "sum"},
+	}
+	tSrc.NS = append(tSrc.NS, 42, 43)
+	tSrc.BS = append(tSrc.BS, "kveik", "fox")
+
+	err := Do(tDst, tSrc)
+	require.Nil(t, err)
+	require.Equal(t, tSrc.NS, tDst.NS)
+	require.Equal(t, tSrc.BS, tDst.BS)
+	require.Equal(t, tSrc.BA, tDst.BA)
+}
+
 func TestSimpleTypes(t *testing.T) {
 	type T struct {
 		N   int     `overwrite:"true"`
