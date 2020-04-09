@@ -32,6 +32,12 @@ func Do(dst, src interface{}) error {
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 
+		if field.Type.Kind() == reflect.Struct {
+			// Pass the address of the interface type to recursion so all supported values get set
+			// in entire structure tree
+			return Do(vDst.Elem().Field(i).Addr().Interface(), vSrc.Field(i).Interface())
+		}
+
 		// Skip kinds that are not supported
 		if !checkSupportedKind(field.Type.Kind()) {
 			continue
@@ -43,8 +49,8 @@ func Do(dst, src interface{}) error {
 			return err
 		}
 
-		// Ignore non tagged fields but let the struct types continue to be executed recursively
-		if !tag.overwrite && field.Type.Kind() != reflect.Struct {
+		// Ignore non tagged fields
+		if !tag.overwrite {
 			continue
 		}
 
@@ -54,12 +60,6 @@ func Do(dst, src interface{}) error {
 
 		if tag.omitempty && vSrc.Field(i).IsZero() {
 			continue
-		}
-
-		if field.Type.Kind() == reflect.Struct {
-			// Pass the address of the interface type to recursion so all supported values get set
-			// in entire structure tree
-			return Do(vDst.Elem().Field(i).Addr().Interface(), vSrc.Field(i).Interface())
 		}
 
 		// Overwrite value
@@ -95,10 +95,10 @@ func checkInput(dst, src interface{}) error {
 
 func checkSupportedKind(kind reflect.Kind) bool {
 	switch kind {
-	case reflect.Struct, reflect.String, reflect.Bool,
+	case reflect.String, reflect.Bool, reflect.Slice, reflect.Array, reflect.Map,
 		reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64,
 		reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64,
-		reflect.Float32, reflect.Float64, reflect.Slice, reflect.Array, reflect.Map:
+		reflect.Float32, reflect.Float64:
 		return true
 	default:
 		return false

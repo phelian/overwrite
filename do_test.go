@@ -36,7 +36,8 @@ func TestTypes(t *testing.T) {
 
 func TestNestedStructs(t *testing.T) {
 	type Tt struct {
-		TtN string `overwrite:"true"`
+		TtN  string `overwrite:"true"`
+		TtN1 string
 	}
 
 	type T struct {
@@ -57,6 +58,9 @@ func TestNestedStructs(t *testing.T) {
 		T: T{
 			N: 1337,
 			B: "foot",
+			Tt: Tt{
+				TtN1: "polly",
+			},
 		},
 	}
 
@@ -79,6 +83,7 @@ func TestNestedStructs(t *testing.T) {
 	require.Equal(t, tSrc.T.B, tDst.T.B)
 	require.Equal(t, tSrc.T.N, tDst.T.N)
 	require.Equal(t, tSrc.T.Tt.TtN, tDst.T.Tt.TtN)
+	require.NotEqual(t, tSrc.T.Tt.TtN1, tDst.T.Tt.TtN1)
 }
 
 func TestMap(t *testing.T) {
