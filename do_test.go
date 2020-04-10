@@ -110,18 +110,21 @@ func TestMap(t *testing.T) {
 
 func TestSliceAndArrays(t *testing.T) {
 	type T struct {
-		NS []int     `overwrite:"true"`
-		BS []string  `overwrite:"true"`
-		BA [2]string `overwrite:"true"`
+		NS  []int     `overwrite:"true"`
+		BS  []string  `overwrite:"true"`
+		BS2 []string  `overwrite:"true"`
+		BA  [2]string `overwrite:"true"`
 	}
 
 	tDst := &T{
-		NS: make([]int, 0),
-		BS: make([]string, 0),
-		BA: [2]string{"foo", "bar"},
+		NS:  make([]int, 0),
+		BS:  make([]string, 0),
+		BS2: make([]string, 0),
+		BA:  [2]string{"foo", "bar"},
 	}
 	tDst.NS = append(tDst.NS, 2, 3)
 	tDst.BS = append(tDst.BS, "monkey", "ape")
+	tDst.BS2 = append(tDst.BS, "monkey", "ape")
 
 	tSrc := T{
 		NS: make([]int, 0),
@@ -135,6 +138,7 @@ func TestSliceAndArrays(t *testing.T) {
 	require.Nil(t, err)
 	require.Equal(t, tSrc.NS, tDst.NS)
 	require.Equal(t, tSrc.BS, tDst.BS)
+	require.Equal(t, tSrc.BS2, tDst.BS2)
 	require.Equal(t, tSrc.BA, tDst.BA)
 }
 

@@ -18,7 +18,39 @@ var (
 	tagOverwrite = "overwrite"
 )
 
-// Do write here
+// Do copies tagged fields of arguments <src> into <dst>
+//
+// dst needs to be a pointer to same type of struct that src is
+// src needs to be passed as value and not a pointer
+//
+// Do traverses the value src recursively. If an encountered field is tagged with
+// overwrite: true it tries to copy the value of that field into the dst counterpart field.
+//
+// Supported types
+// Simple types (string, intX, uintX, floatX, boolean)
+// Arrays, slices, maps of simple types
+// Structs with simple supported types (recursivly)
+// Pointers are not supported atm
+//
+// The "omitempty" option specifies that the field should be omitted
+// from the overwrite if the field has an empty value, defined as
+// false, 0, and any empty array, slice, map, or string.
+//
+// Examples of struct field tags and their meanings:
+//
+//   // Field in dst will be overwritten by the value in src
+//   Field int `overwrite:"true"`
+//
+//   // Field in dst will be overwritten by the value in src
+//   // the field is omitted from the overwrite if its src value is empty,
+//   // as defined above.
+//   Field int `overwrite:"true,omitempty"`
+//
+//   // Field will not be overwritten, same as not setting tag
+//   Field int `overwrite:"false"`
+//
+// Channel, complex, and function values cannot be overwritten.
+// Attempting to overwrite such a value will be silently ignored.
 func Do(dst, src interface{}) error {
 	if err := checkInput(dst, src); err != nil {
 		return err
