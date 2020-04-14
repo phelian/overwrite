@@ -33,7 +33,7 @@ var (
 // Supported types
 // Simple types (string, intX, uintX, floatX, boolean)
 // Arrays, slices, maps of simple types
-// Structs with simple supported types (recursivly)
+// Structs with simple supported types (recursively)
 // Pointers are not supported atm
 //
 // The "omitempty" option specifies that the field should be omitted

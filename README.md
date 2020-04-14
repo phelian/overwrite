@@ -1,6 +1,6 @@
 # Go overwrite
 
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/phelian/overwrite) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/phelian/overwrite) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Go Report Card](https://goreportcard.com/badge/github.com/phelian/overwrite)](https://goreportcard.com/report/github.com/phelian/overwrite)
 
 Currently, overwrite requires Go version 1.13 or greater.
 
@@ -92,3 +92,8 @@ There types can be overwritten, others will be silently ignored
 - float32, float64
   Also
 - arrays, slices, maps and structs containing compatable types
+
+# Up next
+
+- Throw error on unsupported types with tags
+- Add tag to allow for configuration to only overwrite is destination struct is empty

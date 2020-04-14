@@ -52,7 +52,7 @@ func TestNestedStructs(t *testing.T) {
 
 	type K struct {
 		KN int    `overwrite:"true"`
-		KB string `overwrite:"true"`
+		KB string `json:"kultur_bolaget" overwrite:"true"`
 		T  T
 	}
 
